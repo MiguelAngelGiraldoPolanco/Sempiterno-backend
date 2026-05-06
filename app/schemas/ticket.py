@@ -1,0 +1,45 @@
+from datetime import datetime
+from typing import List
+
+from pydantic import BaseModel
+
+
+# 1. El objeto que representa cada producto en el JSON
+class ProductoItem(BaseModel):
+    nombre: str
+    cantidad: int
+    precio_unidad: float
+
+
+# 2. Esquema base (lo que comparten creación y lectura)
+# tiket base hereda de base model que seria la clase padre
+class TicketBase(BaseModel):
+    customerName: str
+    products: List[ProductoItem]
+    total: float
+    iva: float = 0.0
+
+
+# 3. Esquema para CREAR (Lo que el cliente envía)
+# No pedimos el ID porque la base de datos lo genera solo
+# tiketcreate hereda de tiketbase que seria la clase padre para conservar sus atributos
+class TicketCreate(TicketBase):
+    pass
+
+
+# 4. Esquema para LEER (Lo que tu API devuelve)
+# Aquí sí incluimos el ID y la fecha que generó la DB
+class TicketRead(TicketBase):
+    id: int
+    date: datetime
+
+    class Config:
+        # Esto es vital para que Pydantic pueda leer
+        # los datos desde SQLModel/Base de datos
+        from_attributes = True
+
+
+class ReporteMensual(BaseModel):
+    total_ventas: float
+    cantidad_tickets: int
+    tickets: List[TicketRead]

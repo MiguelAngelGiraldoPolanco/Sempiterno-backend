@@ -10,8 +10,7 @@ router = APIRouter()
 def read_tikets():
     return [
         Ticket(
-            id=1,
-            number="001",
+            id=57,
             customerName="Miguel Angel",
             products=[
                 ProductoItem(nombre="Vela 1", cantidad=3, precio_unidad=129.0),
@@ -21,3 +20,8 @@ def read_tikets():
             iva=0.12,
         )
     ]
+
+
+@router.get("/{tiket_id}")
+async def read_tiket(item_id):
+    return {"item_id": item_id}

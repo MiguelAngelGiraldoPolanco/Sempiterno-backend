@@ -16,6 +16,8 @@ RUN pip install --upgrade pip
 # 2. Instalamos FastAPI y Uvicorn primero
 RUN pip install --no-cache-dir "fastapi[all]"
 
+RUN pip install sqlmodel
+
 # 3. Copiamos e instalamos TU requirements.txt (Pandas, Numpy, etc.)
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
