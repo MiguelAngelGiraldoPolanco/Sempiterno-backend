@@ -16,6 +16,7 @@ build/
 
 # --- Logs y Bases de Datos ---
 *.log
+*.db
 *.sqlite3
 
 # --- Docker ---

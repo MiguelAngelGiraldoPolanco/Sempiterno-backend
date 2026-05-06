@@ -44,8 +44,9 @@ def obtener_ticket_por_id(db: Session, ticket_id: int):
     return ticket
 
 
+# Funcion para obtener los tikets pero por la fecha para los reportes mensuales
 def obtener_tikets_por_fecha(db: Session, init_date: datetime, last_date: datetime):
-    sentencia = select(Ticket).where(Ticket.fecha.between(fecha_inicio, fecha_fin))
+    sentencia = select(Ticket).where(Ticket.fecha.between(init_date, last_date))
     resultados = db.exec(sentencia).all()
     return resultados
 
