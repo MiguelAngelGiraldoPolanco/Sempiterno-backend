@@ -9,7 +9,7 @@ from sqlmodel import Session, select
 
 def crear_client(db: Session, client_data: ClientCreate) -> Client:
     # Evaluamos primero si el email existe para que no pueda acceder a muchos desceuntos con el mismo email
-    if obtener_clients_por_email(db, client_data.emial):
+    if obtener_clients_por_email(db, client_data.email):
         raise HTTPException(status_code=400, detail="El cliente ya existe")
     nuevo_cliente = Client(**client_data.model_dump())
     db.add(nuevo_cliente)

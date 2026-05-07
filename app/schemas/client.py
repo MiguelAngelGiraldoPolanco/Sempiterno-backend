@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 # 1. El objeto que representa cada producto en el JSON
 class ClientBase(BaseModel):
-    emial: str
+    email: str
 
 
 class ClientCreate(ClientBase):
