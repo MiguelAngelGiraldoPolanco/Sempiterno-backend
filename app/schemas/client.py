@@ -1,11 +1,11 @@
 from datetime import datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 
 # 1. El objeto que representa cada producto en el JSON
 class ClientBase(BaseModel):
-    email: str
+    email: EmailStr
 
 
 class ClientCreate(ClientBase):
