@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from app.models.ticket import Ticket
 from app.schemas.ticket import TicketCreate
@@ -47,7 +47,9 @@ def obtener_ticket_por_id(db: Session, ticket_id: int):
 
 # Funcion para obtener los tikets pero por la fecha para los reportes mensuales
 def obtener_tikets_por_fecha(db: Session, init_date: datetime, last_date: datetime):
-    sentencia = select(Ticket).where(Ticket.date.between(init_date, last_date))
+    sentencia = select(Ticket).where(
+        Ticket.date.between(asegurar_utc(init_date), asegurar_utc(last_date))
+    )
     resultados = db.exec(sentencia).all()
     return resultados
 
@@ -63,3 +65,9 @@ def eliminar_ticket(db: Session, ticket_id: int):
     db.delete(ticket_db)
     db.commit()
     return {"ok": True, "message": f"Ticket {ticket_id} eliminado"}
+
+
+def asegurar_utc(dt: datetime) -> datetime:
+    if dt.tzinfo is None:
+        return dt.replace(tzinfo=timezone.utc)
+    return dt.astimezone(timezone.utc)

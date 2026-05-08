@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from app.models.client import Client
 from app.schemas.client import ClientCreate
@@ -26,7 +26,9 @@ def obtener_todos_los_clients(db: Session):
 
 
 def obtener_clients_por_fecha(db: Session, init_date: datetime, last_date: datetime):
-    sentencia = select(Client).where(Client.date.between(init_date, last_date))
+    sentencia = select(Client).where(
+        Client.date.between(asegurar_utc(init_date), asegurar_utc(last_date))
+    )
     resultados = db.exec(sentencia).all()
     return resultados
 
@@ -37,3 +39,9 @@ def obtener_clients_por_email(db: Session, email: EmailStr):
     if not resultados:
         raise HTTPException(status_code=404, detail="El cliente no existe")
     return resultados
+
+
+def asegurar_utc(dt: datetime) -> datetime:
+    if dt.tzinfo is None:
+        return dt.replace(tzinfo=timezone.utc)
+    return dt.astimezone(timezone.utc)
