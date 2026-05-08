@@ -64,7 +64,7 @@ def eliminar_ticket(db: Session, ticket_id: int):
     )  # Reutilizamos la función de arriba
     db.delete(ticket_db)
     db.commit()
-    return {"ok": True, "message": f"Ticket {ticket_id} eliminado"}
+    return {"ok": True, "message": "Ticket eliminado"}
 
 
 def asegurar_utc(dt: datetime) -> datetime:
