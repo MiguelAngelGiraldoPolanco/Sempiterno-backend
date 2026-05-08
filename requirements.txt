@@ -18,6 +18,9 @@ email-validator==2.3.0
 pytest==9.0.3
 httpx==0.28.1
 
+# --- Security ---
+passlib[bcrypt]==1.7.4
+python-jose[cryptography]==3.3.0
 
 annotated-doc==0.0.4
 annotated-types==0.7.0
@@ -25,8 +28,6 @@ anyio==4.13.0
 certifi==2026.4.22
 click==8.3.3
 dnspython==2.8.0
-
-
 fastapi-cli==0.0.24
 fastapi-cloud-cli==0.17.1
 fastar==0.11.0
