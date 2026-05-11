@@ -85,7 +85,9 @@ def eliminar_ticket(
     return {"ok": True, "message": "Ticket eliminado"}
 
 
-def asegurar_utc(dt: datetime) -> datetime:
+def asegurar_utc(
+    dt: datetime,
+) -> datetime:
     if dt.tzinfo is None:
         return dt.replace(tzinfo=timezone.utc)
     return dt.astimezone(timezone.utc)
