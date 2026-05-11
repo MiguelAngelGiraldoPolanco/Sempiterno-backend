@@ -30,9 +30,9 @@ def crear_usuario(
     return user_service.crear_usuario(db, user_in)
 
 
-@router.put("/{user_id}", response_model=user.UserBase)
+@router.put("/{user_id}", response_model=user.UserRead)
 def modificar_usiuario(
-    user_in: user.UserBase, user_id: int, db: Session = Depends(database.get_session)
+    user_in: user.UserUpdate, user_id: int, db: Session = Depends(database.get_session)
 ):
     return user_service.modificar_usuario(db, user_id, user_in)
 
