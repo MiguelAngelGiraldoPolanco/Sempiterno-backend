@@ -1,25 +1,27 @@
 from datetime import datetime, timezone
 from typing import Sequence
 
-from app.models.client import Client
-from app.schemas.client import ClientCreate
+from app.models.lead import Lead
+from app.schemas.lead import LeadCreate
+
+# ÑÑÑÑ
 from fastapi import HTTPException, status
 from pydantic import EmailStr
 from sqlmodel import Session, select
 
 
-def crear_client(
+def crear_lead(
     db: Session,
-    client_data: ClientCreate,
-) -> Client:
+    lead_data: LeadCreate,
+) -> Lead:
     # Evaluamos primero si el email existe para que no pueda acceder a muchos desceuntos con el mismo email
-    if obtener_clients_por_email(db, client_data.email):
+    if obtener_leads_por_email(db, lead_data.email):
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail="El cliente ya existe",
+            detail="El lead ya existe",
         )
-    nuevo_cliente = Client(**client_data.model_dump())
-    db.add(nuevo_cliente)
+    nuevo_lead = Lead(**lead_data.model_dump())
+    db.add(nuevo_lead)
     try:
         db.commit()
     except Exception:
@@ -29,22 +31,22 @@ def crear_client(
             detail="Error de integridad, intente de nuevo",
         )
 
-    db.refresh(nuevo_cliente)
+    db.refresh(nuevo_lead)
 
-    return nuevo_cliente
+    return nuevo_lead
 
 
-def obtener_todos_los_clients(
+def obtener_todos_los_leads(
     db: Session,
-) -> Sequence[Client]:
-    return db.exec(select(Client)).all()
+) -> Sequence[Lead]:
+    return db.exec(select(Lead)).all()
 
 
-def obtener_clients_por_fecha(
+def obtener_leads_por_fecha(
     db: Session,
     init_date: datetime,
     last_date: datetime,
-) -> Sequence[Client]:
+) -> Sequence[Lead]:
 
     if init_date > last_date:
         raise HTTPException(
@@ -52,18 +54,18 @@ def obtener_clients_por_fecha(
             detail="La fecha de inicio no puede ser posterior a la fecha de fin",
         )
 
-    sentencia = select(Client).where(
-        Client.create_at.between(asegurar_utc(init_date), asegurar_utc(last_date))
+    sentencia = select(Lead).where(
+        Lead.create_at.between(asegurar_utc(init_date), asegurar_utc(last_date))
     )
 
     return db.exec(sentencia).all()
 
 
-def obtener_clients_por_email(
+def obtener_leads_por_email(
     db: Session,
     email: EmailStr,
-) -> Client | None:
-    sentencia = select(Client).where(Client.email == email)
+) -> Lead | None:
+    sentencia = select(Lead).where(Lead.email == email)
 
     return db.exec(sentencia).first()
 
