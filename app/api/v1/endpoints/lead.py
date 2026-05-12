@@ -42,13 +42,13 @@ def read_lead_email(
     email_lead: EmailStr,
     db: Session = Depends(database.get_session),
 ):
-    lead = lead_service.obtener_leads_por_email(db, email_lead)
-    if not lead:
+    lead_emails = lead_service.obtener_leads_por_email(db, email_lead)
+    if not lead_emails:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Lead no encontrado",
         )
-    return lead
+    return lead_emails
 
 
 @router.post(

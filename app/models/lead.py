@@ -5,11 +5,12 @@ from pydantic import EmailStr
 from sqlmodel import Field, SQLModel
 
 
-class Client(SQLModel, table=True):
+class Lead(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     email: EmailStr = Field(unique=True, index=True)
     create_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    marketing_consent: bool = False
 
 
 # Esto es CRUCIAL en Pydantic v2 / SQLModel moderno
-model_config = {"arbitrary_types_allowe": True, "from_attributes": True}
+model_config = {"arbitrary_types_allowed": True, "from_attributes": True}
