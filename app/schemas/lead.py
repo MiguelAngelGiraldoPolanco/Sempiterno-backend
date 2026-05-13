@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional
 
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, ConfigDict, EmailStr
 
 
 # 1. El objeto que representa cada producto en el JSON
@@ -19,7 +19,4 @@ class LeadRead(LeadBase):
     create_at: datetime
     marketing_consent: bool
 
-    class Config:
-        # Esto es vital para que Pydantic pueda leer
-        # los datos desde SQLModel/Base de datos
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

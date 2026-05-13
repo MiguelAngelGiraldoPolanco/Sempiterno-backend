@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import List
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 # 1. El objeto que representa cada producto en el JSON
@@ -33,10 +33,7 @@ class TicketRead(TicketBase):
     id: int
     create_at: datetime
 
-    class Config:
-        # Esto es vital para que Pydantic pueda leer
-        # los datos desde SQLModel/Base de datos
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class ReporteMensual(BaseModel):
