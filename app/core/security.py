@@ -27,8 +27,11 @@ def create_access_token(
             minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
         )
 
-    # El 'sub' (subject) suele ser el email o el ID del usuario
-    to_encode = {"exp": expire, "sub": str(subject)}
+    # El 'sub' (subject) es el email o el ID del usuario
+    to_encode = {
+        "exp": expire,
+        "sub": str(subject),
+    }
     encoded_jwt = jwt.encode(
         to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM
     )
