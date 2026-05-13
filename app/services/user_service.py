@@ -46,6 +46,7 @@ def user_login(
     db: Session,
     user_data: UserCreate,
 ) -> dict:
+
     user = obtener_usuario_por_email(db, user_data.email)
     if not user:
         raise HTTPException(
@@ -58,10 +59,11 @@ def user_login(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Credenciales inválidas",
         )
-    token = security.create_access_token(subject=user.id)
 
+    token = security.create_access_token(subject=str(user.id))
     # 5. Respondemos con el formato estándar
     return {
+        "id": user.id,
         "access_token": token,
         "token_type": "bearer",
     }
